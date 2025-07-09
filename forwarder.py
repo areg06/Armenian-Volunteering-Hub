@@ -1,5 +1,6 @@
 import asyncio
 from telethon import TelegramClient, events
+from keep_alive import keep_alive
 
 # API credentials
 API_ID = 25683175
@@ -64,4 +65,5 @@ def get_message_link(msg, chat):
     return None
 
 if __name__ == '__main__':
+    keep_alive()
     asyncio.run(main()) 

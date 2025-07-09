@@ -1,6 +1,10 @@
 import asyncio
 from datetime import datetime, timedelta, timezone
 from telethon import TelegramClient
+from telethon.events import NewMessage
+from flask import Flask
+from threading import Thread
+from keep_alive import keep_alive
 
 # API credentials
 API_ID = 25683175
@@ -12,7 +16,7 @@ SOURCE_CHANNELS = [
     '@pavu_volunteers',
     '@funzone_volunteering',
     '@level_up_volunteering',
-    '@powervolunteering'
+    '@powervolunteering',
 ]
 # Target channel
 TARGET_CHANNEL = '@ArmenianVolunteerHub'
@@ -25,7 +29,21 @@ NUM_POSTS = 10
 # How many days back to look
 DAYS_BACK = 10
 
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "I'm alive!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
 async def main():
+    keep_alive()
     client = TelegramClient(SESSION_NAME, API_ID, API_HASH)
     await client.start()
     print('Client started. Fetching messages...')
@@ -88,6 +106,11 @@ def get_message_link(msg):
     if hasattr(msg.chat, 'username') and msg.chat.username:
         return f"https://t.me/{msg.chat.username}/{msg.id}"
     return None
+
+@client.on(NewMessage(chats=SOURCE_CHANNELS))
+async def handler(event):
+    print(f"Received new message in {event.chat.username if hasattr(event.chat, 'username') else event.chat.title}")
+    # ... rest of your code ...
 
 if __name__ == '__main__':
     asyncio.run(main()) 
