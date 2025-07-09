@@ -11,7 +11,8 @@ SOURCE_CHANNELS = [
     '@pavu_volunteers',
     '@funzone_volunteering',
     '@level_up_volunteering',
-    '@powervolunteering'
+    '@powervolunteering',
+    '@testforvol'
 ]
 # Target channel to forward messages to
 TARGET_CHANNEL = '@ArmenianVolunteerHub'
